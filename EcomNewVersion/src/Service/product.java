@@ -42,11 +42,12 @@ public class product extends HttpServlet {
         response.setCharacterEncoding("utf-8");
          
 		JSONObject obj = new JSONObject();
-		
+		int current_user_id;
 		
 		Produit produit; 
 		int choice =0; 
 		int ID = 0; 
+		// 0> getListProdOfUser
 		// 1> create 
 		// 2> update 
 		// 3> delete 
@@ -56,11 +57,30 @@ public class product extends HttpServlet {
 		if(request.getParameter("choice") != null) { choice = Integer.parseInt(request.getParameter("choice")) ; }
 		
 		switch( choice ) {
-		//Creation d un nouveau produit
+		
+		case(0) : 
+			// Afficher tous les produits de l'utilisateur courant s il en a
+			Utilisateur User0 = (Utilisateur) request.getSession().getAttribute("UserInfo");
+		    current_user_id = User0.getIdus();
+		    
+		    List<Produit> p = data.getProductsByUser(current_user_id);
+		    
+		    int j=1; 
+			for(Produit Pr : p ) {
+				obj.put(j, Pr.toJson() );	
+				j++; 	
+			}
+			
+			response.getWriter().append(obj.toString());
+			
+			// Test Navigateur -> http://127.0.0.1:8080/JPAEJB/product
+			
+		break;
+		
 		case(1) : 
-	//---> J' ai mis User en commentaire car ta connexion genere une erreur(marche pas)
-			//Utilisateur User = (Utilisateur) request.getSession().getAttribute("UserInfo");
-			int current_user_id = 1993 ;//User.getIdus();
+			//Creation d un nouveau produit
+			Utilisateur User = (Utilisateur) request.getSession().getAttribute("UserInfo");
+		    current_user_id = User.getIdus();
 			
 			String titre = request.getParameter("title");
 			String description = request.getParameter("desc");
@@ -81,9 +101,9 @@ public class product extends HttpServlet {
 		case(2) : 
 			// Mise a jour d une produit
 			
-			//-> Idem que pour cas 1	
-			//Utilisateur User = (Utilisateur) req.getSession().getAttribute("UserInfo");
-			current_user_id = 1993; //User.getIdus();
+			
+			Utilisateur User2 = (Utilisateur) request.getSession().getAttribute("UserInfo");
+			current_user_id = User2.getIdus();
 			int idProd = Integer.parseInt(request.getParameter("IDProd"));
 			Produit current_product = data.getProductInfo(idProd);
 			String titreMAJ = request.getParameter("title");
@@ -130,9 +150,9 @@ public class product extends HttpServlet {
 		case(3) : 
 			// Supprimer un produit
 			
-			//-> Idem que pour cas 1 et 2 -_-
-			//Utilisateur User = (Utilisateur) req.getSession().getAttribute("UserInfo");
-			current_user_id = 1993;//User.getIdus();
+			
+			Utilisateur User3 = (Utilisateur) request.getSession().getAttribute("UserInfo");
+			current_user_id = User3.getIdus();
 			
 			int idProdrmv = Integer.parseInt(request.getParameter("IDProd"));
 			
@@ -197,11 +217,7 @@ public class product extends HttpServlet {
 		
 			break;
 		
-		}
-		
-		
-
-		
+		}	
 		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}

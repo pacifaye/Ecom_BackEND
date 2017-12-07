@@ -42,12 +42,13 @@ public class connect extends HttpServlet {
          
 		JSONObject obj = new JSONObject();
 	 
-		//String Login = request.getParameter("login");
-		//String password = request.getParameter("mdp");
+		String Login = request.getParameter("login");
+		String password = request.getParameter("mdp");
 	 
-		 
-		String Login = "amine@gmail.com";
-		String password = "admin";
+		// Test Navigateur -> http://127.0.0.1:8080/JPAEJB/connect?login=pacifaye@yahoo.fr&mdp=azerty
+		
+		//String Login = "amine@gmail.com";
+		//String password = "admin";
 				
 		boolean checking = data.isAuthGood(Login,password);
 		if(checking){
@@ -59,7 +60,7 @@ public class connect extends HttpServlet {
 			obj.put("name", u.getName());
 			obj.put("fname", u.getFname());
 			obj.put("phone", u.getPhone());
-			obj.put("subscribdate", u.getSavedate());
+			obj.put("subscribdate", u.getSubscribdate());
 			
 			// Sauvegarder dans la session toutes les infos relatives à l utilisateur courant
 			UserSession.setAttribute("UserInfo", u);

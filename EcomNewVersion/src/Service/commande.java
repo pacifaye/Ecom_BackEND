@@ -1,6 +1,8 @@
 package Service;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -8,6 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.Commande;
+import model.Produit;
+import model.Utilisateur;
 
 import org.json.simple.JSONObject;
 
@@ -34,45 +40,23 @@ public class commande extends HttpServlet {
 	        response.setCharacterEncoding("utf-8");
 	         
 			JSONObject obj = new JSONObject();
+			int current_user_id;
+			Utilisateur User;
 			
-			int choice =0; 
-			int ID = 0; 
-			
-			// 1> create 
-			// 2> update 
-			// 3> delete 
-			// 4> getInfo 
-			if(request.getParameter("choice") != null) { choice = Integer.parseInt(request.getParameter("choice")) ; }
-			
-			switch( choice ) {
-			case(1) : 
+			// Faire une soumission/commande sur un produit
+			User = (Utilisateur) request.getSession().getAttribute("UserInfo");
+			current_user_id = User.getIdus();
 				
-				
-			break;
-			
-			case(2) : 
-				
-				
-			break; 
-			
-			case(3):
-			
-				
-				
-			break;
-			
-			case(4):
-			
-			
-				response.getWriter().append(obj.toString());	
-			break; 
-			}
-			
-			
-	 		
-	 		
-	 		
-	 	 
+			int idProd = Integer.parseInt(request.getParameter("idProd"));
+			int price = Integer.parseInt(request.getParameter("prix"));
+					
+			Commande com1 = new Commande(current_user_id, idProd, Date.valueOf(LocalDate.now()), price, 0);
+			data.create(com1);
+					
+			// cree minimum 2 utilisateurs (1 vendeur et un acheteur pour faire tes tests)
+			// Test Navigateur -> http://127.0.0.1:8080/JPAEJB/commande?idProd=91&prix=40
+						
+				 	 
 	}
 
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

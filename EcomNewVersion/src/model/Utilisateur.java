@@ -3,7 +3,9 @@ package model;
  
 import java.io.Serializable;
 import java.lang.String;
+import java.sql.Date;
 import java.time.LocalDate;
+
 import javax.persistence.*;
 
 /**
@@ -11,19 +13,10 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name="Utilisateur") 
+@Table(name="Utilisateur")
 public class Utilisateur implements Serializable {
 
-	public Utilisateur( int ID, String Email) {
-		this.idus = ID; 
-		this.email = Email;
-	}
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+	   
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	@Column(name="IDUS")
@@ -42,7 +35,7 @@ public class Utilisateur implements Serializable {
 	private int phone;
 	
 	@Column(name="SUSCRIBDATE")
-	private LocalDate savedate;
+	private Date subscribdate;
 	
 	@Column(name="STATE")
 	private int state;
@@ -51,12 +44,12 @@ public class Utilisateur implements Serializable {
 	private String password;
 	
 
-	public Utilisateur(String nom, String prenom, String email, int phone,LocalDate date,String password){
+	public Utilisateur(String nom, String prenom, String email, int phone,Date date,String password){
 		this.name = nom;
 		this.fname = prenom;
 		this.email = email;
 		this.phone = phone;
-		this.savedate = date;
+		this.subscribdate = date;
 		this.state = 1;
 		this.password = password;
 	}
@@ -105,12 +98,12 @@ public class Utilisateur implements Serializable {
 		this.phone = phone;
 	}
 	
-	public LocalDate getSavedate() {
-		return this.savedate;
+	public Date getSubscribdate() {
+		return this.subscribdate;
 	}
 
-	public void setSavedate(LocalDate savedate) {
-		this.savedate = savedate;
+	public void setSavedate(Date savedate) {
+		this.subscribdate = savedate;
 	}
 	
 	public int getState() {

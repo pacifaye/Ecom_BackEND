@@ -19,19 +19,11 @@ import model.Produit;
 @Stateless
 @LocalBean
 public class CommandeDao implements CommandeDaoLocal {
-
+	   @PersistenceContext(unitName = "Myecommerce")
+	   	private EntityManager em;
 	
-    
     public CommandeDao() { }
-
-    @PersistenceContext(unitName = "Myecommerce")
-   	private EntityManager em;
-    
-    
-  
-    
-    
-    
+       
     @Override
     @Transactional 
     public Commande update(final Commande t) {
@@ -42,7 +34,12 @@ public class CommandeDao implements CommandeDaoLocal {
     @Override
     @Transactional 
     public void delete(final int id) {
-      //  this.em.remove(this.em.getReference(type, id));
+    	Commande c = em.find(Commande.class, id);
+		if(c!= null){
+			System.out.println("Commande à supprimer trouvé");
+			// Proceder à la suppression de la commande
+			em.remove(c);
+		}
     }
     
     @Override
@@ -51,6 +48,36 @@ public class CommandeDao implements CommandeDaoLocal {
         this.em.persist(t);
         return t;
     }
+
+
+	@Override
+	@Transactional
+	public Commande getCommandeInfo(int idCom) {
+		return em.find(Commande.class, idCom);
+	}
+	
+	@Override
+	public List<Commande> getMyCommands(int id) {
+		List<Commande> commands = null;
+ 		String sql = "SELECT u FROM Commande u WHERE u.idus="+id+"";
+ 		Query query = this.em.createQuery(sql);	 
+ 		
+ 	    commands = query.getResultList();
+ 		 
+ 		 
+		return commands;
+	}
+
+	public List<Commande> getListOffers(int idPR) {
+		List<Commande> commands = null;
+ 		String sql = "SELECT u FROM Commande u WHERE u.idpr="+idPR+"";
+ 		Query query = this.em.createQuery(sql);	 
+ 		
+ 	    commands = query.getResultList();
+ 		 
+ 		 
+		return commands;
+	}
     
     
     

@@ -33,17 +33,15 @@ public class Connection implements ConnectionLocal {
 	public boolean isAuthGood(String log, String pw) {
 		 
 		boolean check = false;
-	 
-       	String sql = "SELECT u FROM Utilisateur u WHERE u.email=:arg1 and u.password=:arg2  ";
-		Query query = this.em.createQuery(sql);	 
-		query.setParameter("arg1", log);
-		query.setParameter("arg2", pw);
-		List results = query.getResultList();
+		String sql = "SELECT password FROM Utilisateur WHERE EMAIL ='"+log+"'";
+		Query query = em.createQuery(sql);
+		List results = query.getResultList();	
 		
 		if (results.isEmpty()) {
 			System.out.println("No results found");
 		} else {
-			String password =(String)results.get(0);
+			String password = results.get(0).toString();
+			System.out.println("password = "+password);
 			if(password.equals(pw))
 				check = true;	
 		}
@@ -76,7 +74,7 @@ public class Connection implements ConnectionLocal {
     	// à refaire avec persist
     	
 		// Requete d' insert au niveau de la base
-			String s = "'"+u.getName()+"','"+u.getFname()+"','"+u.getEmail()+"',"+u.getPhone()+",'"+u.getSavedate()+"',"+u.getState()+",'"+u.getPassword()+"'";
+			String s = "'"+u.getName()+"','"+u.getFname()+"','"+u.getEmail()+"',"+u.getPhone()+",'"+u.getSubscribdate()+"',"+u.getState()+",'"+u.getPassword()+"'";
 			String sql = "INSERT INTO Utilisateur (NAME,FNAME,EMAIL,PHONE,SAVEDATE,STATE,PASSWORD)VALUES("+s+");";
 			Query query = em.createNativeQuery(sql);
 			query.executeUpdate();
